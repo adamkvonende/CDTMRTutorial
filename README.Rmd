@@ -1,0 +1,177 @@
+---
+output: github_document
+pandoc_args: ["+raw_html"]
+always_allow_html: true
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+
+
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.path = "doc/Figures/README-",
+                      out.width = "100%")
+# for tibbles...
+#options(pillar.neg=F, # do no print neg number in red
+ #       pillar.subtle=F, # turn off highlighting of significant digits
+ #       tibble.width = 170) # default=95, increase it to make it readable
+
+```
+
+```{r include = F}
+if (!require(pacman)) install.packages("pacman")
+p_load(dplyr, rio, knitr, kable, kableExtra)
+```
+
+
+## 📝 CDT25 Genetics Module: Summary statistics
+
+Previously, summary statistics for many phenotypes could be extracted directly from the [IEU OpenGWAS repository](https://gwas.mrcieu.ac.uk/) using the `extract_instruments` function in the `TwoSampleMR` package. However, this function is no longer functional. Below, you will find direct links to the summary statistics for exposures and outcomes relevant to this tutorial and your projects.
+
+
+### ☀️ Exposures
+
+<span style="font-size:14px;">
+**Note:** Exposure datasets include only genome-wide significant variants (*P* < 5e-8).
+</span>
+
+
+##### Smoking initiation (GSCAN European)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/smoking_initiation_liu_(GSCAN)_eur.csv?download=1"))`
+
+
+
+##### Lifetime smoking index (European)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/lifetime_smoking_munafo_eur.csv?download=1"))`
+
+##### LDL-C (Various)
+
+For more information on these data sets, see [Table 1](#table1)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/ldl_willer.csv?download=1"))`
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/ldl_barton.csv?download=1"))`
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/ldl_wojcik.csv?download=1"))`
+
+
+##### Tryglicerides (Global Lipids Genetics Consortium; Multiancestry)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/trigs_willer_(GLGC)_multi.csv?download=1"))`
+
+##### Tryglicerides (UK Biobank)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/trigs_richardson_(UKB)_eur.csv?download=1"))`
+
+##### Body mass index (GIANT; European)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/bmi_yengo_(GIANT)_eur.csv?download=1"))`
+
+##### Body mass index (UK Biobank)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/bmi_neale_(UKB)_eur.csv?download=1"))`
+
+##### Heart rate (Hrgene; European)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/heart_rate_denHoad_(HRgene)_eur.csv?download=1"))`
+
+##### Heart rate (UK Biobank)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/heart_rate_Elsworth_(UKB)_eur.csv?download=1"))`
+
+
+### ⚕️ Outcomes
+
+
+##### Coronary Heart Disease (CARDIoGRAMplusC4D; European)*
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/chd_aragam_matched_ldl.csv?download=1"))`
+
+<span style="font-size:14px;">
+*These variants are matched to the LDL-C lists for the purpose of the practical
+</span>
+##### All stroke (GIGASTROKE; European)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/AS_mishra_(GIGA)_eur.csv?download=1"))`
+
+##### All stroke (GIGASTROKE; Multiancestry)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/AS_mishra_(GIGA)_multi.csv?download=1"))`
+
+##### All ischaemic stroke (GIGASTROKE; European)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/AIS_mishra_(GIGA)_eur.csv?download=1"))`
+
+##### All ischaemic stroke (GIGASTROKE; Multiancestry)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/AIS_mishra_(GIGA)_multi.csv?download=1"))`
+
+##### Cardioembolic stroke (GIGASTROKE; European)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/CES_mishra_(GIGA)_eur.csv?download=1"))`
+
+##### Cardioembolic stroke (GIGASTROKE; Multiancestry)
+
+`data <- read.csv(url("https://zenodo.org/record/14871196/files/CES_mishra_(GIGA)_multi.csv?download=1"))`
+
+
+### ⚠️ Handling Timeout Errors for `read.csv`
+
+If you encounter **timeout errors** when reading in large files, you can try increasing the timeout limit:
+
+```{r, eval=FALSE}
+install.packages("RCurl")
+library(RCurl)
+curlSetOpt(timeout = 600)
+```
+
+If that does not work, you may need to **download the file directly** and then load it into R:
+
+```{r, eval=FALSE}
+download.file("https://zenodo.org/record/14871196/files/smoking_initiation_liu_(GSCAN)_eur.csv",  
+              "smoking_init.csv")
+data <- read.csv("smoking_init.csv")
+```
+
+### 📊 Information on Practical data sets
+
+<a id="table1"></a>
+**Table 1: Information for exposure data and outcome data sets used in practical**
+
+
+```{r, echo=FALSE, message=FALSE}
+# Create the table as a data frame
+table <- data.frame(
+  Trait = c("LDL-C", "LDL-C", "LDL-C", "CHD"),
+  Author = c("Barton", "Willer", "Wojcik", "Aragam"),
+  PMID = c(34226706, 24097068, 31217584, 36474045),
+  Year = c(2021, 2013, 2019, 2022),
+  Pop = c("European*", "Mixed", "Hispanic/Latin American", "European"),
+  Variants = c("4M", "2M", "3M", "20M"),
+  `Sample size` = c("437,068", "173,082", "17,373", "1.3M (181K cases†)")
+)
+
+
+# Create a formatted table with column width adjustments
+table %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F, font_size=11) %>%
+  #column_spec(1, width = "2in") %>%  # Wider first column (PRS names)
+  #column_spec(2:4, width = "1.5in") %>%  # Narrower columns for Cases/Controls, OR, P-value
+  footnote(symbol = c("UK Biobank", "10% from UK Biobank"))
+
+```
+
+
+
+
+### 🙋 Questions?
+
+Please email [Adam Von Ende](mailto:adam.vonende@ndph.ox.ac.uk) or [Elsa Valdez-Márquez](mailto:elsa.valdez-marquez@ndph.ox.ac.uk).
